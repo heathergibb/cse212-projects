@@ -11,24 +11,56 @@ public class CustomerService {
         // Test Cases
 
         // Test 1
-        // Scenario: 
-        // Expected Result: 
+        // Scenario: The user shall specify the maximum size of the Customer Service Queue when it is created. If the size is invalid (less than or equal to 0) then the size shall default to 10.
+        // if size = 0
+        // Expected Result: maxSize = 10
         Console.WriteLine("Test 1");
-
+        var cs = new CustomerService(0);
+        Console.WriteLine("Expected Result = 10: " + cs._maxSize);
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
 
         // Test 2
-        // Scenario: 
+        // Scenario: The AddNewCustomer method shall enqueue a new customer into the queue.
         // Expected Result: 
-        Console.WriteLine("Test 2");
+
 
         // Defect(s) Found: 
 
         Console.WriteLine("=================");
 
-        // Add more Test Cases As Needed Below
+        // Test 3
+        // Scenario: If the queue is full when trying to add a customer, then an error message will be displayed.
+        // Expected Result: 
+        // Console.WriteLine("Test 3");
+        // var cs3 = new CustomerService(1);
+        // Console.WriteLine("Attempting to add Customer 1");
+        // cs3.AddNewCustomer();
+        // Console.WriteLine("Attempting to add Customer 2");
+        // cs3.AddNewCustomer();
+        
+        // Defect(s) Found: 
+
+        Console.WriteLine("=================");
+
+        // Test 4
+        // Scenario: The ServeCustomer function shall dequeue the next customer from the queue and display the details.
+        // Expected Result: 
+        Console.WriteLine("Test 4");
+        var cs4 = new CustomerService(2);
+        cs4._queue.Add(new CustomerService.Customer("Mary Smith", "111", "Help"));
+        cs4._queue.Add(new CustomerService.Customer("John Smith", "222", "Help"));
+        cs4.ServeCustomer();
+
+        Console.WriteLine("=================");
+
+        // Test 5
+        // Scenario: If the queue is empty when trying to serve a customer, then an error message will be displayed.
+        // Expected Result: 
+        Console.WriteLine("Test 5");
+        var cs5 = new CustomerService(2);
+        cs5.ServeCustomer();
     }
 
     private readonly List<Customer> _queue = new();
@@ -67,7 +99,7 @@ public class CustomerService {
     /// </summary>
     private void AddNewCustomer() {
         // Verify there is room in the service queue
-        if (_queue.Count > _maxSize) {
+        if (_queue.Count >= _maxSize) {
             Console.WriteLine("Maximum Number of Customers in Queue.");
             return;
         }
@@ -88,9 +120,17 @@ public class CustomerService {
     /// Dequeue the next customer and display the information.
     /// </summary>
     private void ServeCustomer() {
-        _queue.RemoveAt(0);
-        var customer = _queue[0];
-        Console.WriteLine(customer);
+        if (_queue.Count <= 0)
+        {
+            Console.WriteLine("Queue is empty.");
+        }
+        else
+        {
+            var customer = _queue[0];
+            _queue.RemoveAt(0);
+            Console.WriteLine(customer);
+        }
+        
     }
 
     /// <summary>
