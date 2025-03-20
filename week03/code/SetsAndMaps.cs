@@ -21,8 +21,21 @@ public static class SetsAndMaps
     /// <param name="words">An array of 2-character words (lowercase, no duplicates)</param>
     public static string[] FindPairs(string[] words)
     {
-        // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // TODO Problem 1
+        HashSet<string> wordSet = new HashSet<string>(words);
+        List<string> pairs = new List<string>();
+
+        foreach (string word in wordSet)
+        {
+            string inverseWord = $"{word[1]}{word[0]}";
+            if (wordSet.Contains(inverseWord) && word != inverseWord)
+            {
+                pairs.Add($"{word} & {inverseWord}");
+                wordSet.Remove(inverseWord);
+            }
+        }
+
+        return pairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +56,14 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            if (degrees.ContainsKey(fields[3]))
+            {
+                degrees[fields[3]]++;
+            }
+            else 
+            {
+                degrees.Add(fields[3], 1);
+            }
         }
 
         return degrees;
@@ -67,7 +88,58 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+        // remove spaces
+        word1 = word1.Replace(" ", "").ToLower();
+        word2 = word2.Replace(" ", "").ToLower();
+
+        if (word1.Length != word2.Length)
+        {
+            return false;
+        }
+
+        Dictionary<char,int> word1Dict = new Dictionary<char,int>();
+        
+        // count each letter instance in the string for word1
+        foreach (char letter in word1)
+        {
+            if (word1Dict.ContainsKey(letter))
+            {
+                word1Dict[letter]++;
+            }
+            else
+            {
+                word1Dict.Add(letter, 1);
+            }
+        }    
+
+        Dictionary<char,int> word2Dict = new Dictionary<char,int>();
+        
+        // count each letter instance in the string for word2
+        foreach (char letter in word2)
+        {
+            if (word2Dict.ContainsKey(letter))
+            {
+                word2Dict[letter]++;
+            }
+            else
+            {
+                word2Dict.Add(letter, 1);
+            }
+        }    
+
+        // if there are a different number of letters, then not an anagram
+        if (word1Dict.Count != word2Dict.Count)
+        {
+            return false;
+        }
+
+        // if the dictionary entries (letter counts) don't match, then not an anagram
+        if (word1Dict.Except(word2Dict).Any())
+        {
+            return false;
+        }
+       
+        return true;
     }
 
     /// <summary>
