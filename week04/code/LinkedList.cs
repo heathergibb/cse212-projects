@@ -132,6 +132,35 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+        // Search for the node that matches the 'value' by starting
+        // at the head of the list
+        Node? curr = _head;
+        while (curr is not null)
+        {
+            // if 'value' matches the node value
+            if (curr.Data == value)
+            {
+                if (curr == _head)
+                {
+                    RemoveHead();
+                }
+                else if (curr == _tail)
+                { 
+                    RemoveTail();
+                }
+                // If the value is in the middle of the list
+                // remove node and connect the prev and next links to eachother
+                else
+                {
+                    curr.Prev!.Next = curr.Next; // Set the next of the node before current to the node after current 
+                    curr.Next!.Prev = curr.Prev; // Set the prev of the node after current to the node before current
+                }
+
+                return; // We can exit the function after we remove
+            }
+
+            curr = curr.Next; // Go to the next node to search for 'value'
+        }
     }
 
     /// <summary>
